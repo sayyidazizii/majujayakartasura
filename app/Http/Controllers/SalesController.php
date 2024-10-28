@@ -86,6 +86,12 @@ class SalesController extends Controller
         //
     }
 
+
+    public function print(Sales $sales)
+    {
+        
+    }
+
     /**
      * Update the specified resource in storage.
      */
