@@ -80,6 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('sales', SalesController::class);
     Route::post('sales-item', [SalesController::class, 'addItem'])->name('sales-create-item');
     Route::post('delete-sales-item', [SalesController::class, 'deleteItem'])->name('sales-delete-item');
+    Route::get('sales-print/{id}', [SalesController::class, 'print'])->name('sales.print');
 });
 
 

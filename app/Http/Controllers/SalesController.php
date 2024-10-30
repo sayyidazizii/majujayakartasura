@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use TCPDF;
+use Carbon\Carbon;
 use App\Models\Item;
 use App\Models\Unit;
 use App\Models\Sales;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 class SalesController extends Controller
 {
@@ -87,10 +90,67 @@ class SalesController extends Controller
     }
 
 
+
     public function print(Sales $sales)
     {
-        
+        $salesInvoice = Sales::with('items')
+        ->where('data_state',0)
+        ->first();
+        // dd($salesInvoice);
+        // Buat instance TCPDF
+        $pdf = new TCPDF();
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Nama Penulis');
+        $pdf->SetTitle('Kwitansi Penjualan');
+        $pdf->SetSubject('Kwitansi Penjualan');
+        $pdf->SetMargins(10, 10, 10);
+
+        // Tambahkan halaman baru
+        $pdf->AddPage();
+
+        // Judul Kwitansi
+        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->Cell(0, 10, 'Kwitansi Penjualan', 0, 1, 'C');
+
+        // Data Kwitansi
+        $pdf->SetFont('helvetica', '', 12);
+        $pdf->Ln(10); // Tambah spasi
+
+        // Tampilkan data penjualan dari objek $sales
+        $html = '
+            <table cellpadding="4" cellspacing="0" border="1">
+                <tr>
+                    <td><strong>No. Kwitansi</strong></td>
+                    <td>' . $salesInvoice->id . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Tanggal</strong></td>
+                    <td>' . Carbon::parse($salesInvoice->sales_invoice_date)->format('d-m-Y') . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Nama Pelanggan</strong></td>
+                    <td>' . $salesInvoice->customer_name . '</td>
+                </tr>
+                <tr>
+                    <td><strong>Jumlah Pembayaran</strong></td>
+                    <td>Rp ' . number_format($salesInvoice->subtotal_amount, 2, ',', '.') . '</td>
+                </tr>
+            </table>
+        ';
+
+        // Tambahkan HTML ke PDF
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Tanda tangan
+        $pdf->Ln(20);
+        $pdf->Cell(0, 10, 'Tanda Tangan', 0, 1, 'R');
+        $pdf->Ln(15);
+        $pdf->Cell(0, 10, '(Nama Penerima)', 0, 1, 'R');
+
+        // Output PDF
+        $pdf->Output('Kwitansi_Penjualan_' . $sales->invoice_number . '.pdf', 'I');
     }
+
 
     /**
      * Update the specified resource in storage.
