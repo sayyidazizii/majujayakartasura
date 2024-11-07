@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Item;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SalesItem extends Model
 {
@@ -31,5 +32,10 @@ class SalesItem extends Model
     public function sales()
     {
         return $this->belongsTo(Sales::class);
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id');
     }
 }

@@ -80,6 +80,13 @@
                             id="quantity">
                     </div>
                 </div>
+                <div class="col-sm-12 col-md-6">
+                    <div class="form-group">
+                        <div class="text-dark">Tanggal</div>
+                        <input required placeholder="tanggal" type="date" class='form-control' name="sales_invoice_date"
+                        id="sales_invoice_date">
+                    </div>
+                </div>
                 <div class="card-footer">
                     <div class="float-end">
                         <button class="btn btn-success" type="button" onclick="addItem()">

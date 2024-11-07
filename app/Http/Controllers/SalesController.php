@@ -91,57 +91,96 @@ class SalesController extends Controller
 
 
 
-    public function print(Sales $sales)
+    public function print($sales)
     {
-        $salesInvoice = Sales::with('items')
-        ->where('data_state',0)
-        ->first();
-        // dd($salesInvoice);
-        // Buat instance TCPDF
-        $pdf = new TCPDF();
+        $salesInvoice = Sales::with(['items.item'])
+            ->where('data_state', 0)
+            ->where('id', $sales)
+            ->first();
+
+            // dd($sales);
+
+        // Buat instance TCPDF dengan ukuran kertas custom untuk struk
+        $pdf = new TCPDF('P', 'mm', array(80, 200)); // 80 mm lebar, 200 mm panjang
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor('Nama Penulis');
         $pdf->SetTitle('Kwitansi Penjualan');
         $pdf->SetSubject('Kwitansi Penjualan');
-        $pdf->SetMargins(10, 10, 10);
+        $pdf->SetMargins(5, 5, 5); // Margins kecil untuk struk
 
         // Tambahkan halaman baru
         $pdf->AddPage();
 
         // Judul Kwitansi
-        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->SetFont('helvetica', 'B', 12);
         $pdf->Cell(0, 10, 'Kwitansi Penjualan', 0, 1, 'C');
 
         // Data Kwitansi
-        $pdf->SetFont('helvetica', '', 12);
-        $pdf->Ln(10); // Tambah spasi
+        $pdf->SetFont('helvetica', '', 10);
+        $pdf->Ln(2);
 
-        // Tampilkan data penjualan dari objek $sales
         $html = '
-            <table cellpadding="4" cellspacing="0" border="1">
+            <table cellpadding="3" cellspacing="0" border="0">
                 <tr>
-                    <td><strong>No. Kwitansi</strong></td>
+                    <td><strong>No. Kwitansi:</strong></td>
                     <td>' . $salesInvoice->id . '</td>
                 </tr>
                 <tr>
-                    <td><strong>Tanggal</strong></td>
+                    <td><strong>Tanggal:</strong></td>
                     <td>' . Carbon::parse($salesInvoice->sales_invoice_date)->format('d-m-Y') . '</td>
                 </tr>
-                
                 <tr>
-                    <td><strong>Jumlah Pembayaran</strong></td>
-                    <td>Rp ' . number_format($salesInvoice->subtotal_amount, 2, ',', '.') . '</td>
+                    <td><strong>Pelanggan:</strong></td>
+                    <td>' . $salesInvoice->customer_name . '</td>
                 </tr>
             </table>
         ';
 
-        // Tambahkan HTML ke PDF
         $pdf->writeHTML($html, true, false, true, false, '');
 
+        // Loop untuk item penjualan
+        $pdf->Ln(5);
+        $pdf->SetFont('helvetica', 'B', 10);
+        $pdf->Cell(0, 10, 'Detail Item:', 0, 1, 'L');
+
+        $pdf->SetFont('helvetica', '', 9);
+        $htmlItems = '<table cellpadding="2" cellspacing="0" border="1" width="100%">
+            <tr>
+                <th>Nama Item</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Total</th>
+            </tr>';
+
+        foreach ($salesInvoice->items as $item) {
+            $htmlItems .= '
+                <tr>
+                    <td>' . $item->item->item_name . '</td>
+                    <td>' . $item->quantity . '</td>
+                    <td>Rp ' . number_format($item->item_unit_price, 2, ',', '.') . '</td>
+                    <td>Rp ' . number_format($item->item_unit_price *  $item->quantity , 2, ',', '.') . '</td>
+                </tr>
+            ';
+        }
+
+        $htmlItems .= '</table>';
+        $pdf->writeHTML($htmlItems, true, false, true, false, '');
+
+        // Total Pembayaran
+        $pdf->Ln(5);
+        $pdf->SetFont('helvetica', 'B', 10);
+        $pdf->Cell(0, 10, 'Total: Rp ' . number_format($salesInvoice->subtotal_amount, 2, ',', '.'), 0, 1, 'R');
+
+        // Tanda tangan
+        $pdf->Ln(10);
+        $pdf->Cell(0, 10, 'Tanda Tangan', 0, 1, 'R');
+        $pdf->Ln(15);
+        $pdf->Cell(0, 10, '(Nama Penerima)', 0, 1, 'R');
 
         // Output PDF
-        $pdf->Output('Kwitansi_Penjualan_' . $sales->invoice_number . '.pdf', 'I');
+        $pdf->Output('Kwitansi_Penjualan_' . $sales . '.pdf', 'I');
     }
+
 
 
     /**
