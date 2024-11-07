@@ -127,10 +127,7 @@ class SalesController extends Controller
                     <td><strong>Tanggal</strong></td>
                     <td>' . Carbon::parse($salesInvoice->sales_invoice_date)->format('d-m-Y') . '</td>
                 </tr>
-                <tr>
-                    <td><strong>Nama Pelanggan</strong></td>
-                    <td>' . $salesInvoice->customer_name . '</td>
-                </tr>
+                
                 <tr>
                     <td><strong>Jumlah Pembayaran</strong></td>
                     <td>Rp ' . number_format($salesInvoice->subtotal_amount, 2, ',', '.') . '</td>
@@ -141,11 +138,6 @@ class SalesController extends Controller
         // Tambahkan HTML ke PDF
         $pdf->writeHTML($html, true, false, true, false, '');
 
-        // Tanda tangan
-        $pdf->Ln(20);
-        $pdf->Cell(0, 10, 'Tanda Tangan', 0, 1, 'R');
-        $pdf->Ln(15);
-        $pdf->Cell(0, 10, '(Nama Penerima)', 0, 1, 'R');
 
         // Output PDF
         $pdf->Output('Kwitansi_Penjualan_' . $sales->invoice_number . '.pdf', 'I');

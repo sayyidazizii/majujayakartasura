@@ -3,15 +3,15 @@
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
-        <a class="align-items-center d-flex m-0 navbar-brand text-wrap" href="{{ route('dashboard') }}">
-            <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="...">
-            <span class="ms-3 font-weight-bold">Soft UI Dashboard Laravel</span>
+        <a class="align-items-center d-flex m-0 navbar-brand text-wrap">
+            <img src="../assets/img/LOGO MAJU JAYA.png" class="navbar-brand-img h-100" alt="...">
+            <span class="ms-3 font-weight-bold"></span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse  w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ url('dashboard') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -36,7 +36,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Laravel Examples</h6>
             </li>
@@ -70,7 +70,7 @@
                     <span class="nav-link-text ms-1">User Profile</span>
                 </a>
             </li>
-            <li class="nav-item pb-2">
+            <!-- <li class="nav-item pb-2">
                 <a class="nav-link {{ Request::is('user-management') ? 'active' : '' }}"
                     href="{{ url('user-management') }}">
                     <div
@@ -81,9 +81,9 @@
                     </div>
                     <span class="nav-link-text ms-1">User Management</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Example pages</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Pages</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('unit') ? 'active' : '' }}" href="{{ route('unit.index') }}">

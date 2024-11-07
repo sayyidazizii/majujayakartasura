@@ -34,17 +34,18 @@
                                 @foreach ($data as $value)
                                     <tr>
                                         <td>{{ $no++ }}</td>
+                                        <!-- <td>{{ $sales_invoice_date }}</td> -->
                                         <td>{{ $value->sales_invoice_date }}</td>
                                         <td>{{ $value->subtotal_amount }}</td>
                                         <td>
                                             <form action="{{ route('sales.destroy', $value->id) }}" method="post">
                                                 @method('delete')
                                                 @csrf
-                                                <button class="btn btn-sm btn-danger" type="submit">Hapus</button>
+                                                 <button class="btn btn-sm bg-gradient-danger" type="submit">Hapus</button>
                                             </form>
-                                            <a href="{{ route('sales.edit', $value->id) }}" role="button"
-                                                class="btn btn-sm btn-warning">Edit</a>
-                                            <a href="{{ route('sales.print', $value->id) }}" role="button" class="btn btn-sm btn-success">Kwitansi</a>
+                                            <!-- <a href="{{ route('sales.edit', $value->id) }}" role="button"
+                                                class="btn btn-sm btn-warning">Edit</a> -->
+                                            <a href="{{ route('sales.print', $value->id) }}" role="button" class="btn btn-sm bg-gradient-success">Kwitansi</a>
                                         </td>
                                     </tr>
                                 @endforeach

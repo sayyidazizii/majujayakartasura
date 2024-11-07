@@ -38,10 +38,10 @@
                                             <form action="{{ route('item.destroy', $value->id) }}" method="post">
                                                 @method('delete')
                                                 @csrf
-                                                <button class="btn btn-sm btn-danger" type="submit">Hapus</button>
+                                                <button class="btn btn-sm bg-gradient-danger" type="submit">Hapus</button>
                                             </form>
                                             <a href="{{ route('item.edit', $value->id) }}" role="button"
-                                                class="btn btn-sm btn-warning">Edit</a>
+                                                class="btn btn-sm bg-gradient-warning">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
