@@ -34,7 +34,6 @@
                                 @foreach ($data as $value)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <!-- <td>{{ $sales_invoice_date }}</td> -->
                                         <td>{{ $value->sales_invoice_date }}</td>
                                         <td>{{ $value->subtotal_amount }}</td>
                                         <td>
